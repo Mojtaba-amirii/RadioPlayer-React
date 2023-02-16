@@ -15,14 +15,14 @@ function App() {
   return (
     <div>
       {channels.map((channel, index) => (
-        <div
-          key={index}
-          className="flex flex-row items-center bg-blue-400 border m-40 "
-        >
+        <div key={index} className="flex flex-row border justify-center">
           <div>
-            <img src={channel.image} alt={channel.name} />
+            <img className="w-32" src={channel.image} alt={channel.name} />
           </div>
-          <div className="flex flex-col text-9xl text-gray-700 gap-20 m-10">
+          <div
+            className="flex flex-col text-3xl text-gray-700 gap-4 p-2 "
+            style={{ backgroundColor: `#${channel.color}` }}
+          >
             <h1>{channel.name}</h1>
             <audio controls>
               <source src={channel.liveaudio.url} type="audio/mpeg" />
