@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 async function getRadioPlayerData() {
   const response = await fetch(
@@ -15,6 +14,7 @@ function App() {
   }, []);
   return (
     <div className=" flex flex-col items-center justify-center w-full sm:w-1/2 mx-auto xl:w-1/3 2xl:w-1/5 h-full gap-6 p-4">
+      <h1 className=" text-2xl font-bold text-gray-600">Radio Sweden</h1>
       {channels.map((channel, index) => (
         <div key={index} className=" flex flex-row">
           <div className=" w-1/4">
