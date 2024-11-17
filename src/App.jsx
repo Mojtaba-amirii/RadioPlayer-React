@@ -1,38 +1,79 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useRadioChannels } from "./hooks/useRadioChannels";
 import ChannelCard from "./components/ChannelCard";
+import AudioPlayer from "./components/AudioPlayer";
 import Loader from "./components/Loader";
+import { Search } from "lucide-react";
 
-function App() {
+export default function App() {
   const { channels, loading, error } = useRadioChannels();
-  const [activeChannel, setActiveChannel] = useState(null);
+  const [activeChannelIndex, setActiveChannelIndex] = useState(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const handlePlay = (index) => {
-    setActiveChannel(index);
-  };
+  const handleChannelChange = useCallback((index) => {
+    setActiveChannelIndex(index);
+    setIsPlaying(true);
+  }, []);
+
+  const handleTogglePlay = useCallback(() => {
+    setIsPlaying((prev) => !prev);
+  }, []);
+
+  const filteredChannels = channels.filter((channel) =>
+    channel.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
-    <section className="container h-full flex flex-col items-center justify-center mx-auto gap-6 p-4">
-      <h1 className="text-2xl font-bold text-gray-600">Radio Sweden</h1>
-
-      {loading ? (
-        <Loader />
-      ) : error ? (
-        <p className="text-red-500 font-semibold">
-          Failed to load channels: {error}
-        </p>
-      ) : (
-        channels.map((channel, index) => (
-          <ChannelCard
-            key={channel.id}
-            channel={channel}
-            isActive={activeChannel === index}
-            onPlay={() => handlePlay(index)}
-          />
-        ))
+    <main className="container mx-auto min-h-screen">
+      <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 mb-24">
+        <div className="px-4 py-6 sm:px-0">
+          <div className="flex mb-4">
+            <input
+              type="text"
+              placeholder="Search channels..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="flex-grow mr-2 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <button
+              title="search"
+              type="search"
+              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            >
+              <Search className="h-5 w-5" />
+            </button>
+          </div>
+          {loading ? (
+            <Loader />
+          ) : error ? (
+            <p className="text-red-500 font-semibold">
+              Failed to load channels: {error}
+            </p>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredChannels.map((channel, index) => (
+                <ChannelCard
+                  key={channel.id}
+                  channel={channel}
+                  isActive={index === activeChannelIndex}
+                  isPlaying={isPlaying && index === activeChannelIndex}
+                  onPlay={() => handleChannelChange(index)}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+      {channels.length > 0 && activeChannelIndex !== null && (
+        <AudioPlayer
+          channels={channels}
+          activeChannelIndex={activeChannelIndex}
+          isPlaying={isPlaying}
+          onChannelChange={handleChannelChange}
+          onTogglePlay={handleTogglePlay}
+        />
       )}
-    </section>
+    </main>
   );
 }
-
-export default App;

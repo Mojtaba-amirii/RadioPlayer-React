@@ -1,45 +1,43 @@
-import { useRef, useEffect } from "react";
+import { Play, Pause } from "lucide-react";
 
-function ChannelCard({ channel, isActive, onPlay }) {
-  const audioRef = useRef();
-
-  useEffect(() => {
-    if (isActive) {
-      audioRef.current.play();
-    } else {
-      audioRef.current.pause();
-      audioRef.current.currentTime = 0;
-    }
-  }, [isActive]);
-
-  const handlePlay = () => {
-    audioRef.current.play();
-    onPlay();
-  };
-
+export default function ChannelCard({ channel, isActive, isPlaying, onPlay }) {
   return (
     <div
-      className={`max-w-xl flex flex-row rounded-lg overflow-hidden ${isActive ? "shadow-lg scale-105 transition-all duration-300 ease-in-out" : ""}`}
+      className={`rounded-lg overflow-hidden shadow-md transition-all duration-300 ease-in-out ${
+        isActive ? "ring-2 ring-blue-500" : ""
+      }`}
     >
-      <div className="w-1/4">
-        <img
-          className="w-full h-full aspect-ratio-16/9 object-fill"
-          src={channel.image}
-          alt={channel.name}
-        />
-      </div>
-      <div
-        className="w-3/4 flex flex-col text-3xl text-gray-700 gap-y-4 py-2 px-4"
-        style={{ backgroundColor: `#${channel.color}` }}
-      >
-        <h2 className="text-xl font-semibold">{channel.name}</h2>
-        <audio ref={audioRef} controls onPlay={handlePlay}>
-          <source src={channel.liveaudio.url} type="audio/mpeg" />
-          Your browser does not support the audio element.
-        </audio>
+      <img
+        className="w-full h-48 object-cover"
+        src={channel.image}
+        alt={channel.name}
+      />
+      <div className="p-4">
+        <h2 className="text-xl font-semibold mb-2">{channel.name}</h2>
+        <p className="text-base text-gray-500 dark:text-gray-200 mb-4">
+          {channel.tagline}
+        </p>
+        <button
+          onClick={onPlay}
+          className={`px-4 py-2 rounded-md flex items-center justify-center ${
+            isActive
+              ? "bg-blue-500 text-white"
+              : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+          }`}
+        >
+          {isActive && isPlaying ? (
+            <>
+              <Pause className="h-5 w-5 mr-2" />
+              Now Playing
+            </>
+          ) : (
+            <>
+              <Play className="h-5 w-5 mr-2" />
+              Play
+            </>
+          )}
+        </button>
       </div>
     </div>
   );
 }
-
-export default ChannelCard;
