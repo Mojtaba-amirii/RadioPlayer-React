@@ -26,10 +26,11 @@ export default function App() {
 
   return (
     <main className="container mx-auto min-h-screen">
-      <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 mb-24">
+      <section className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 mb-24">
         <div className="px-4 py-6 sm:px-0">
           <div className="flex mb-4">
             <input
+              name="search"
               type="text"
               placeholder="Search channels..."
               value={searchTerm}
@@ -38,7 +39,7 @@ export default function App() {
             />
             <button
               title="search"
-              type="search"
+              type="button"
               className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             >
               <Search className="h-5 w-5" />
@@ -51,7 +52,7 @@ export default function App() {
               Failed to load channels: {error}
             </p>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-10">
               {filteredChannels.map((channel, index) => (
                 <ChannelCard
                   key={channel.id}
@@ -64,7 +65,7 @@ export default function App() {
             </div>
           )}
         </div>
-      </div>
+      </section>
       {channels.length > 0 && activeChannelIndex !== null && (
         <AudioPlayer
           channels={channels}

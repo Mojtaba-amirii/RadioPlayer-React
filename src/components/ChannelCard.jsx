@@ -18,6 +18,7 @@ export default function ChannelCard({ channel, isActive, isPlaying, onPlay }) {
           {channel.tagline}
         </p>
         <button
+          type="button"
           onClick={onPlay}
           className={`px-4 py-2 rounded-md flex items-center justify-center ${
             isActive

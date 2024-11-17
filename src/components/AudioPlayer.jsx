@@ -56,9 +56,7 @@ export default function AudioPlayer({
           />
           <div>
             <h3 className="font-semibold">{currentChannel.name}</h3>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
-              Now Playing
-            </p>
+            <p className="text-sm text-green-500">Now Playing</p>
           </div>
         </div>
         <div className="flex items-center space-x-4">
