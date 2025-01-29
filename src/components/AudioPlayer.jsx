@@ -52,7 +52,7 @@ export default function AudioPlayer({
           <img
             src={currentChannel.image}
             alt={currentChannel.name}
-            className="w-12 h-12 rounded"
+            className="w-12 h-12 rounded-sm"
           />
           <div>
             <h3 className="font-semibold">{currentChannel.name}</h3>
