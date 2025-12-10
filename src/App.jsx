@@ -1,9 +1,10 @@
+import { Search } from "lucide-react";
 import { useState, useCallback } from "react";
-import { useRadioChannels } from "./hooks/useRadioChannels";
+
+import Loader from "./components/Loader";
 import ChannelCard from "./components/ChannelCard";
 import AudioPlayer from "./components/AudioPlayer";
-import Loader from "./components/Loader";
-import { Search } from "lucide-react";
+import { useRadioChannels } from "./hooks/useRadioChannels";
 
 export default function App() {
   const { channels, loading, error } = useRadioChannels();
