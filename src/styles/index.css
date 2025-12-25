@@ -29,13 +29,28 @@
   ::file-selector-button {
     border-color: var(--color-gray-200, currentColor);
   }
+
+  body {
+    @apply bg-zinc-950 text-zinc-100 antialiased selection:bg-purple-500/30;
+  }
+
+  /* Respect reduced motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
 }
 
 *::before,
 *::after,
 * {
   box-sizing: border-box;
-  /* outline: 2px solid lime; */
 }
 
 html {

@@ -26,49 +26,52 @@ export default function App() {
   );
 
   return (
-    <main className="container mx-auto min-h-screen">
-      <section className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 mb-24">
-        <div className="px-4 py-6 sm:px-0">
-          <div className="flex mb-4">
+    <main className="relative min-h-screen overflow-hidden bg-zinc-950 text-zinc-100 selection:bg-purple-500/30">
+      {/* Ambient Background Glow */}
+      <div className="fixed top-0 left-1/2 -translate-x-1/2 w-250 h-150 bg-purple-900/20 rounded-full blur-[120px] pointer-events-none" />
+      <div className="fixed bottom-0 right-0 w-200 h-150 bg-teal-900/10 rounded-full blur-[100px] pointer-events-none" />
+
+      <section className="relative z-10 max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 pb-32">
+        <div className="flex flex-col items-center mb-12 space-y-6">
+          <div className="relative w-full max-w-2xl">
+            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+              <Search className="h-5 w-5 text-zinc-400" />
+            </div>
             <input
               name="search"
               type="text"
-              placeholder="Search channels..."
+              placeholder="Search for a station..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="grow mr-2 px-3 py-2 border border-gray-300 rounded-md focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+              className="w-full pl-12 pr-4 py-4 bg-white/5 border border-white/10 rounded-full text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:bg-white/10 transition-all backdrop-blur-md shadow-lg shadow-black/20"
               aria-label="Search channels"
             />
-            <button
-              title="search"
-              type="button"
-              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-hidden focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 cursor-pointer"
-              aria-label="Search"
-            >
-              <Search className="h-5 w-5" />
-            </button>
           </div>
-          {loading ? (
-            <Loader />
-          ) : error ? (
-            <p className="text-red-500 font-semibold">
+        </div>
+
+        {loading ? (
+          <Loader />
+        ) : error ? (
+          <div className="text-center p-8 bg-red-500/10 border border-red-500/20 rounded-2xl">
+            <p className="text-red-400 font-medium">
               Failed to load channels: {error}
             </p>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-10">
-              {filteredChannels.map((channel, index) => (
-                <ChannelCard
-                  key={channel.id}
-                  channel={channel}
-                  isActive={index === activeChannelIndex}
-                  isPlaying={isPlaying && index === activeChannelIndex}
-                  onPlay={() => handleChannelChange(index)}
-                />
-              ))}
-            </div>
-          )}
-        </div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {filteredChannels.map((channel, index) => (
+              <ChannelCard
+                key={channel.id}
+                channel={channel}
+                isActive={index === activeChannelIndex}
+                isPlaying={isPlaying && index === activeChannelIndex}
+                onPlay={() => handleChannelChange(index)}
+              />
+            ))}
+          </div>
+        )}
       </section>
+
       {channels.length > 0 && activeChannelIndex !== null && (
         <AudioPlayer
           channels={channels}
