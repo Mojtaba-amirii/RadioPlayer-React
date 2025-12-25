@@ -7,24 +7,23 @@ export function useRadioChannels() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    let isMounted = true;
+    const controller = new AbortController();
+    const signal = controller.signal;
 
-    getRadioPlayerData()
+    getRadioPlayerData(signal)
       .then((data) => {
-        if (isMounted) {
-          setChannels(data);
-          setLoading(false);
-        }
+        setChannels(data);
+        setLoading(false);
       })
       .catch((err) => {
-        if (isMounted) {
+        if (err.name !== "AbortError") {
           setError(err.message);
           setLoading(false);
         }
       });
 
     return () => {
-      isMounted = false;
+      controller.abort();
     };
   }, []);
 

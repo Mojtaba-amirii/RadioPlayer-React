@@ -11,6 +11,7 @@ export default function ChannelCard({ channel, isActive, isPlaying, onPlay }) {
         className="w-full h-48 object-cover"
         src={channel.image}
         alt={channel.name}
+        loading="lazy"
       />
       <div className="p-4">
         <h2 className="text-xl font-semibold mb-2">{channel.name}</h2>
@@ -20,7 +21,12 @@ export default function ChannelCard({ channel, isActive, isPlaying, onPlay }) {
         <button
           type="button"
           onClick={onPlay}
-          className={`px-4 py-2 rounded-md flex items-center justify-center ${
+          aria-label={
+            isActive && isPlaying
+              ? `Pause ${channel.name}`
+              : `Play ${channel.name}`
+          }
+          className={`px-4 py-2 rounded-md flex items-center justify-center cursor-pointer ${
             isActive
               ? "bg-blue-500 text-white"
               : "bg-gray-200 text-gray-800 hover:bg-gray-300"

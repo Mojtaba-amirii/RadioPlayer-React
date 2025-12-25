@@ -17,7 +17,12 @@ export default function AudioPlayer({
   useEffect(() => {
     if (audioRef.current) {
       if (isPlaying) {
-        audioRef.current.play();
+        audioRef.current.play().catch((error) => {
+          // Ignore AbortError which happens when pausing while loading
+          if (error.name !== "AbortError") {
+            console.error("Playback failed:", error);
+          }
+        });
       } else {
         audioRef.current.pause();
       }
@@ -53,6 +58,7 @@ export default function AudioPlayer({
             src={currentChannel.image}
             alt={currentChannel.name}
             className="w-12 h-12 rounded-sm"
+            loading="lazy"
           />
           <div>
             <h3 className="font-semibold">{currentChannel.name}</h3>
@@ -61,8 +67,9 @@ export default function AudioPlayer({
         </div>
         <div className="flex items-center space-x-4">
           <button
-            className="p-2 rounded-full bg-gray-200 text-gray-800 hover:bg-gray-300"
+            className="p-2 rounded-full bg-gray-200 text-gray-800 hover:bg-gray-300 cursor-pointer"
             onClick={onTogglePlay}
+            aria-label={isPlaying ? "Pause" : "Play"}
           >
             {isPlaying ? (
               <Pause className="h-5 w-5" />
@@ -71,14 +78,16 @@ export default function AudioPlayer({
             )}
           </button>
           <button
-            className="p-2 rounded-full bg-gray-200 text-gray-800 hover:bg-gray-300"
+            className="p-2 rounded-full bg-gray-200 text-gray-800 hover:bg-gray-300 cursor-pointer"
             onClick={handleNext}
+            aria-label="Next channel"
           >
             <SkipForward className="h-5 w-5" />
           </button>
           <button
             onClick={toggleMute}
-            className="p-2 rounded-full bg-gray-200 text-gray-800 hover:bg-gray-300"
+            className="p-2 rounded-full bg-gray-200 text-gray-800 hover:bg-gray-300 cursor-pointer"
+            aria-label={isMuted ? "Unmute" : "Mute"}
           >
             {isMuted ? (
               <VolumeX className="h-5 w-5" />
@@ -93,7 +102,8 @@ export default function AudioPlayer({
             step="0.01"
             value={volume}
             onChange={handleVolumeChange}
-            className="w-24"
+            className="w-24 cursor-pointer"
+            aria-label="Volume"
           />
         </div>
       </div>

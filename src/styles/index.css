@@ -1,4 +1,17 @@
-@import 'tailwindcss';
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #0ea5e9;
+  --color-secondary: #075985;
+  --color-tertiary: #082f49;
+  --color-quaternary: #1e293b;
+  --color-quinary: #334155;
+  --color-senary: #4b5563;
+  --color-septenary: #d1d5db;
+  --color-octonary: #e5e7eb;
+  --color-nonary: #f3f4f6;
+  --color-denary: #f9fafb;
+}
 
 /*
   The default border color has changed to `currentColor` in Tailwind CSS v4,
@@ -16,19 +29,6 @@
   ::file-selector-button {
     border-color: var(--color-gray-200, currentColor);
   }
-}
-
-:root {
-  --color-primary: #0ea5e9;
-  --color-secondary: #075985;
-  --color-tertiary: #082f49;
-  --color-quaternary: #1e293b;
-  --color-quinary: #334155;
-  --color-senary: #4b5563;
-  --color-septenary: #d1d5db;
-  --color-octonary: #e5e7eb;
-  --color-nonary: #f3f4f6;
-  --color-denary: #f9fafb;
 }
 
 *::before,
